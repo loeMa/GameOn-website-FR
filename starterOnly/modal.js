@@ -16,6 +16,7 @@ const cities = document.querySelectorAll("input[name='location']");
 const form = document.querySelector("form");
 const button = document.querySelector(".btn-submit");
 const box = document.querySelector(".modal-body");
+let originalForm = form.innerHTML;
 const inputs = document.querySelectorAll('input[type = "text"], input[type= "email"], input[type= "date"], input[type= "number"], input[type= "radio"], input[type = "checkbox"]');
 let firstData, lastData, emailData, birthdateData, quantityData, cityData, check1, check2;
 
@@ -79,7 +80,7 @@ const messageError = {
   nameError: "Ceci ne doit pas contenir de caractères spéciaux ou de chiffres",
   email: "Veuillez entrer une adresse email valide.",
 	birthdate:"Vous devez entrer votre date de naissance.",
-  bithdateLimit: "Vous devez avoir minimum 13 ans pour vous inscrire",
+  bithdateLimit: "Vous devez avoir minimum 2 ans pour vous inscrire",
   quantityMgs: "Vous devez rentrer une quantité",
 	location: "Vous devez choisir une option.",
 	checkbox: "Vous devez vérifier que vous acceptez les termes et conditions.",
@@ -103,14 +104,23 @@ const errorDisplay = (tag, message, valid) =>{
 }
 
 //--------------------------------------------------------------------------
+function reloadForm(val){
 
+  closeModal();
+  form.innerHTML = originalForm;
+  form.classList.remove('thanks-form');
+  val.remove(); 
+
+}
 
 //-------------------------- submit form------------------------------------
-function validate(){    
+
+
+function validate(e){    
   //pour determiner la hauteur du modal
   let heightBox = box.offsetHeight;
-
-if ( firstData /* && lastData && emailData && birthdateData && quantityData && cityData && check1 */ ){
+  e.preventDefault();
+if ( firstData  /* && lastData && emailData && birthdateData && quantityData && cityData && check1 */  ){
   const data = {
     firstData,
     lastData,
@@ -123,29 +133,38 @@ if ( firstData /* && lastData && emailData && birthdateData && quantityData && c
   }
   //recup des datas
   console.log(data);
+  
   //reset du formulaire en cas de reload
   form.reset();
   checkbox1.checked = false;
-  //
+  //création du texte et du style
   form.innerHTML = "Merci pour votre inscription";
   box.style.height= heightBox + "px";
   box.classList.add("thanks");
   form.classList.add("thanks-form");
+
+  //création d'un nouveau bouton avec les propriétés de btn-submit
   let newBtn = document.createElement("input");
   newBtn.setAttribute("value", "Fermer");
-  newBtn.type = "submit";
+  newBtn.type = "button";
   newBtn.className = "btn-submit";
   box.appendChild(newBtn);
-  newBtn.addEventListener("click", closeModal);
-  return false
+
+  //évenement sur le nouveau bouton
+  newBtn.addEventListener("click", ()=>{
+      location.reload();
+    });
+  //false pour ne pas recharger la page
+  return true;
 }else{
-  alert("Vous devez remplir les champrs manquant")
+  alert("Vous devez remplir les champs manquant");
+  // appel aux functions si champs manquant
   firstCheck(first.value);
   lastCheck(last.value);
   emailCheck(email.value);
   dateCheck(birthdate.value);
   quantityCheck(quantity.value);
-  cityCheck;
+  cityCheck();
   checkboxCheck1(checkbox1.checked)
   return false
   }
