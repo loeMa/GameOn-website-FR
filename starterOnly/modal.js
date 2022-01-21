@@ -104,12 +104,16 @@ const errorDisplay = (tag, message, valid) =>{
 }
 
 //--------------------------------------------------------------------------
-function reloadForm(val){
+function reloadForm(){
 
-  closeModal();
-  form.innerHTML = originalForm;
-  form.classList.remove('thanks-form');
-  val.remove(); 
+  box.classList.remove("thanks");
+  box.removeAttribute("style");
+  form.classList.remove("thanks-form");
+  
+  form.innerHTML= originalForm;
+  
+  closeModal();  
+  
 
 }
 
@@ -120,8 +124,12 @@ function validate(e){
   //pour determiner la hauteur du modal
   let heightBox = box.offsetHeight;
   e.preventDefault();
+  e.stopPropagation();
+
 if ( firstData  /* && lastData && emailData && birthdateData && quantityData && cityData && check1 */  ){
-  const data = {
+  
+  //recup des datas
+  const data = { 
     firstData,
     lastData,
     emailData,
@@ -131,12 +139,21 @@ if ( firstData  /* && lastData && emailData && birthdateData && quantityData && 
     check1,
     check2,
   }
-  //recup des datas
   console.log(data);
   
   //reset du formulaire en cas de reload
   form.reset();
-  checkbox1.checked = false;
+
+  //pour remettre à 0 les données
+  firstData = null;
+  lastData = null;
+  emailData = null;
+  birthdateData = null;
+  quantityData = null;
+  cityData = null;
+  check1 = null;
+  check2 = null;
+
   //création du texte et du style
   form.innerHTML = "Merci pour votre inscription";
   box.style.height= heightBox + "px";
@@ -152,10 +169,17 @@ if ( firstData  /* && lastData && emailData && birthdateData && quantityData && 
 
   //évenement sur le nouveau bouton
   newBtn.addEventListener("click", ()=>{
-      location.reload();
-    });
-  //false pour ne pas recharger la page
+    //on enlève les styles
+    box.classList.remove("thanks");
+    box.removeAttribute("style");
+    form.classList.remove("thanks-form");
+    newBtn.remove();
+    form.innerHTML= originalForm;
+    
+    closeModal();  
+  });
   return true;
+
 }else{
   alert("Vous devez remplir les champs manquant");
   // appel aux functions si champs manquant
