@@ -12,11 +12,10 @@ const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
 const closeBtn = document.querySelectorAll(".close");
-const cities = document.querySelectorAll("input[name='location']"); 
+const cities = document.querySelectorAll("input[type='radio']"); 
 const form = document.querySelector("form");
 const button = document.querySelector(".btn-submit");
 const box = document.querySelector(".modal-body");
-let originalForm = form.innerHTML;
 const inputs = document.querySelectorAll('input[type = "text"], input[type= "email"], input[type= "date"], input[type= "number"], input[type= "radio"], input[type = "checkbox"]');
 let firstData, lastData, emailData, birthdateData, quantityData, cityData, check1, check2;
 
@@ -40,7 +39,7 @@ function closeModal(){
 //--------------------------------------------------------------------------
 
 
-//-----------------------Ecouteurs d'évenements-----------------------------
+//-----------------------Ecouteur d'évenement input-----------------------------
 //Ecouteurs inputs
 inputs.forEach((input) => input.addEventListener("input", (e)=>{
   
@@ -70,6 +69,7 @@ inputs.forEach((input) => input.addEventListener("input", (e)=>{
       null;
   }
 })); 
+
 
 //--------------------------------------------------------------------------
 
@@ -112,10 +112,11 @@ const errorDisplay = (tag, message, valid) =>{
 function validate(e){    
   //pour determiner la hauteur du modal
   let heightBox = box.offsetHeight;
+  //pour que la page ne se recharge pas après submit 
   e.preventDefault();
-  e.stopPropagation();
+  
 
-if ( firstData && lastData && emailData && birthdateData && quantityData && cityData && check1 ){
+if ( firstData && lastData && emailData && birthdateData && quantityData  && cityData  && check1  ){
   
   //recup des datas
   const data = { 
@@ -130,7 +131,7 @@ if ( firstData && lastData && emailData && birthdateData && quantityData && city
   }
   console.log(data);
   
-  //reset du formulaire en cas de reload
+  //reset du formulaire 
   form.reset();
 
   //pour remettre à 0 les données
@@ -143,11 +144,16 @@ if ( firstData && lastData && emailData && birthdateData && quantityData && city
   check1 = null;
   check2 = null;
 
-  //création du texte et du style
-  form.innerHTML = "Merci pour votre inscription";
+  //création de la div du texte et disparition de form
+  var msgEnd = document.createElement("div");
+  msgEnd.innerHTML = "Merci pour votre inscription";
+  box.appendChild(msgEnd);
+  form.style.display = "none";
+
+  //création du style 
   box.style.height= heightBox + "px";
   box.classList.add("thanks");
-  form.classList.add("thanks-form");
+  msgEnd.classList.add("thanks-form");
 
   //création d'un nouveau bouton avec les propriétés de btn-submit
   let newBtn = document.createElement("input");
@@ -158,28 +164,32 @@ if ( firstData && lastData && emailData && birthdateData && quantityData && city
 
   //évenement sur le nouveau bouton
   newBtn.addEventListener("click", ()=>{
+    
     //on enlève les styles
     box.classList.remove("thanks");
     box.removeAttribute("style");
-    form.classList.remove("thanks-form");
+    msgEnd.classList.remove("thanks-form");
+    form.style.display = "block";
+    //on enlève les éléments créé
     newBtn.remove();
-    form.innerHTML= originalForm;
-    
+    msgEnd.remove();
+    // fermeture du modal
     closeModal();  
   });
-  return true;
+  
 
 }else{
   alert("Vous devez remplir les champs manquant");
+  
   // appel aux functions si champs manquant
   firstCheck(first.value);
   lastCheck(last.value);
   emailCheck(email.value);
   dateCheck(birthdate.value);
   quantityCheck(quantity.value);
-  cityCheck();
+  cityCheck(); 
   checkboxCheck1(checkbox1.checked)
-  return false
+  
   }
 }
 
@@ -249,7 +259,6 @@ const dateCheck = (value) => {
   }else if(isNaN(age)){
     errorDisplay(birthdate, messageError.birthdate);
     birthdateData = null;
-    console.log(birth)
   } else{
     errorDisplay(birthdate, "", true);
     birthdateData = value;
@@ -287,7 +296,6 @@ const checkboxCheck1 = (value) =>{
   }else{
     errorDisplay(checkbox1, "", true);
     check1 = value;
-    
   }
 }
 const checkboxCheck2 = (value) =>{
@@ -300,7 +308,7 @@ const checkboxCheck2 = (value) =>{
 //----------------------------------cities check----------------------------
 
   const cityCheck = () =>{
-
+    
     for( const city of cities){
       if(city.checked){
         cityData = city.value;
@@ -309,6 +317,7 @@ const checkboxCheck2 = (value) =>{
       }else{
         errorDisplay(location6, messageError.location);
         cityData = null;
+        
       }
     }
   };
