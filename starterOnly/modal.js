@@ -104,18 +104,7 @@ const errorDisplay = (tag, message, valid) =>{
 }
 
 //--------------------------------------------------------------------------
-function reloadForm(){
 
-  box.classList.remove("thanks");
-  box.removeAttribute("style");
-  form.classList.remove("thanks-form");
-  
-  form.innerHTML= originalForm;
-  
-  closeModal();  
-  
-
-}
 
 //-------------------------- submit form------------------------------------
 
@@ -126,7 +115,7 @@ function validate(e){
   e.preventDefault();
   e.stopPropagation();
 
-if ( firstData  /* && lastData && emailData && birthdateData && quantityData && cityData && check1 */  ){
+if ( firstData && lastData && emailData && birthdateData && quantityData && cityData && check1 ){
   
   //recup des datas
   const data = { 
