@@ -106,96 +106,6 @@ const errorDisplay = (tag, message, valid) =>{
 //--------------------------------------------------------------------------
 
 
-//-------------------------- submit form------------------------------------
-
-
-function validate(e){    
-  //pour determiner la hauteur du modal
-  let heightBox = box.offsetHeight;
-  //pour que la page ne se recharge pas après submit 
-  e.preventDefault();
-  
-
-if ( firstData && lastData && emailData && birthdateData && quantityData  && cityData  && check1  ){
-  
-  //recup des datas
-  const data = { 
-    firstData,
-    lastData,
-    emailData,
-    birthdateData,
-    quantityData,
-    cityData,
-    check1,
-    check2,
-  }
-  console.log(data);
-  
-  //reset du formulaire 
-  form.reset();
-
-  //pour remettre à 0 les données
-  firstData = null;
-  lastData = null;
-  emailData = null;
-  birthdateData = null;
-  quantityData = null;
-  cityData = null;
-  check1 = null;
-  check2 = null;
-
-  //création de la div du texte et disparition de form
-  var msgEnd = document.createElement("div");
-  msgEnd.innerHTML = "Merci pour votre inscription";
-  box.appendChild(msgEnd);
-  form.style.display = "none";
-
-  //création du style 
-  box.style.height= heightBox + "px";
-  box.classList.add("thanks");
-  msgEnd.classList.add("thanks-form");
-
-  //création d'un nouveau bouton avec les propriétés de btn-submit
-  let newBtn = document.createElement("input");
-  newBtn.setAttribute("value", "Fermer");
-  newBtn.type = "button";
-  newBtn.className = "btn-submit";
-  box.appendChild(newBtn);
-
-  //évenement sur le nouveau bouton
-  newBtn.addEventListener("click", ()=>{
-    
-    //on enlève les styles
-    box.classList.remove("thanks");
-    box.removeAttribute("style");
-    msgEnd.classList.remove("thanks-form");
-    form.style.display = "block";
-    //on enlève les éléments créé
-    newBtn.remove();
-    msgEnd.remove();
-    // fermeture du modal
-    closeModal();  
-  });
-  
-
-}else{
-  alert("Vous devez remplir les champs manquant");
-  
-  // appel aux functions si champs manquant
-  firstCheck(first.value);
-  lastCheck(last.value);
-  emailCheck(email.value);
-  dateCheck(birthdate.value);
-  quantityCheck(quantity.value);
-  cityCheck(); 
-  checkboxCheck1(checkbox1.checked)
-  
-  }
-}
-
-//--------------------------------------------------------------------------
-
-
 // ----------------------------name check-----------------------------------
 const nameRegex = /^[a-zA-Z\-]+$/
 const firstCheck = (value) => {
@@ -323,3 +233,95 @@ const checkboxCheck2 = (value) =>{
   };
   //Ecouteur les radio cities
   cities.forEach((input) => input.addEventListener('change', cityCheck));
+
+//------------------------------------------------------------------------
+
+
+//-------------------------- submit form------------------------------------
+
+
+function validate(e){    
+  //pour determiner la hauteur du modal
+  let heightBox = box.offsetHeight;
+  //pour que la page ne se recharge pas après submit 
+  e.preventDefault();
+  
+
+if ( firstData && lastData && emailData && birthdateData && quantityData  && cityData  && check1  ){
+  
+  //recup des datas
+  const data = { 
+    firstData,
+    lastData,
+    emailData,
+    birthdateData,
+    quantityData,
+    cityData,
+    check1,
+    check2,
+  }
+  console.log(data);
+  
+  //reset du formulaire 
+  form.reset();
+
+  //pour remettre à 0 les données
+  firstData = null;
+  lastData = null;
+  emailData = null;
+  birthdateData = null;
+  quantityData = null;
+  cityData = null;
+  check1 = null;
+  check2 = null;
+
+  //création de la div du texte et disparition de form
+  var msgEnd = document.createElement("div");
+  msgEnd.innerHTML = "Merci pour votre inscription";
+  box.appendChild(msgEnd);
+  form.style.display = "none";
+
+  //création du style 
+  box.style.height= heightBox + "px";
+  box.classList.add("thanks");
+  msgEnd.classList.add("thanks-form");
+
+  //création d'un nouveau bouton avec les propriétés de btn-submit
+  let newBtn = document.createElement("input");
+  newBtn.setAttribute("value", "Fermer");
+  newBtn.type = "button";
+  newBtn.className = "btn-submit";
+  box.appendChild(newBtn);
+
+  //évenement sur le nouveau bouton
+  newBtn.addEventListener("click", ()=>{
+    
+    //on enlève les styles
+    box.classList.remove("thanks");
+    box.removeAttribute("style");
+    msgEnd.classList.remove("thanks-form");
+    form.style.display = "block";
+    //on enlève les éléments créé
+    newBtn.remove();
+    msgEnd.remove();
+    // fermeture du modal
+    closeModal();  
+  });
+  
+
+}else{
+  alert("Vous devez remplir les champs manquant");
+  
+  // appel aux functions si champs manquant
+  firstCheck(first.value);
+  lastCheck(last.value);
+  emailCheck(email.value);
+  dateCheck(birthdate.value);
+  quantityCheck(quantity.value);
+  cityCheck(); 
+  checkboxCheck1(checkbox1.checked)
+  
+  }
+}
+
+//--------------------------------------------------------------------------
