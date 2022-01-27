@@ -276,7 +276,7 @@ if ( firstData && lastData && emailData && birthdateData && quantityData  && cit
   check2 = null;
 
   //création de la div du texte et disparition de form
-  var msgEnd = document.createElement("div");
+  let msgEnd = document.createElement("div");
   msgEnd.innerHTML = "Merci pour votre inscription";
   box.appendChild(msgEnd);
   form.style.display = "none";
